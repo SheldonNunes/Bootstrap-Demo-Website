@@ -15,14 +15,7 @@ $(document).ready(function(){
 })
 
 function getComments() {
-	var uri = "http://redsox.tcs.auckland.ac.nz/BC/Open/Service.svc/htmlcomments";
-	var xhr = new XMLHttpRequest();
-	xhr.open("GET", uri, true);
-	xhr.onload = function() {
-		var resp = JSON.parse(xhr.responseText);
-		document.getElementById('span').innerHTML=resp.value;
-	}
-	xhr.send(null);
+	$.get( "http://redsox.tcs.auckland.ac.nz/BC/Open/Service.svc/htmlcomments", function( data ) {  $( "#comments" ).html( data );});
 }
 
 function getDestinations() {
@@ -34,6 +27,24 @@ function getDestinations() {
 		showDestinations(resp.value);
 	}
 	xhr.send(null);
+}
+
+function postComment() { // construct your comment somewhere else, pass it into the function
+	var comment = $("#comment_area").val();
+	var name = $("#name_area").val();
+	var uri = "http://redsox.tcs.auckland.ac.nz/BC/Open/Service.svc/comment?name="+name;
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", uri, true); // post because we are "posting" our data
+	xhr.setRequestHeader("Content-type", "application/json"); // we need to tell the service that we are sending json
+	xhr.send(JSON.stringify(comment)); // use JSON to convert it to JSON.
+	xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) { // this basically checks that the request was succesful
+        	console.log("postComments worked!");
+            getComments(); // this will re-get the comments so that your new comment will show up on the page
+        } else {
+            console.log("postComments didn't work: "+ xhr.status); // use this to debug if it didn't work
+        }
+    }
 }
 
 function showDestinations(dest) {
