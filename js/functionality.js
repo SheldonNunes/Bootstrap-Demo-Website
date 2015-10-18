@@ -9,13 +9,51 @@ $(document).ready(function(){
 		$(this).addClass('current');
 		$("#"+tab_id).addClass('current');
 
-		getComments();
+
 	})
+	getComments();
+	getBlurayNames();
 
 })
 
 function getComments() {
 	$.get( "http://redsox.tcs.auckland.ac.nz/BC/Open/Service.svc/htmlcomments", function( data ) {  $( "#comments" ).html( data );});
+}
+
+function getBlurayNames() {
+//	if($("#sel1").val() == "Blurays"){
+	var uri = "http://redsox.tcs.auckland.ac.nz/BC/Open/Service.svc/brlist?orderby=Title"
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", uri, true);
+	xhr.setRequestHeader("Accept", "application/json");
+	xhr.send(null);
+	xhr.onload = function () {
+		var resp = JSON.parse(xhr.responseText);
+		showNames(resp);
+	}
+
+}
+
+function getBookNames() {
+//	if($("#sel1").val() == "Blurays"){
+	var uri = "Service at http://redsox.tcs.auckland.ac.nz/BC/Open/Service.svc/booklist?orderby=Title"
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", uri, true);
+	xhr.setRequestHeader("Accept", "application/json");
+	xhr.send(null);
+	xhr.onload = function () {
+		var resp = JSON.parse(xhr.responseText);
+		showNames(resp);
+	}
+	
+}
+
+function showNames(resp){
+	console.log("working");
+	console.log(resp);
+	for(var element in resp){
+		$('#Titles').append("<tr><td>" + resp[element].Title + "</td><td>Boop</td><td>Boop</td></tr>\n");
+	}
 }
 
 function getDestinations() {
@@ -29,22 +67,22 @@ function getDestinations() {
 	xhr.send(null);
 }
 
-function postComment() { // construct your comment somewhere else, pass it into the function
+function postComment() { 
 	var comment = $("#comment_area").val();
 	var name = $("#name_area").val();
 	var uri = "http://redsox.tcs.auckland.ac.nz/BC/Open/Service.svc/comment?name="+name;
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", uri, true); // post because we are "posting" our data
-	xhr.setRequestHeader("Content-type", "application/json"); // we need to tell the service that we are sending json
-	xhr.send(JSON.stringify(comment)); // use JSON to convert it to JSON.
+	xhr.open("POST", uri, true);
+	xhr.setRequestHeader("Content-type", "application/json"); 
+	xhr.send(JSON.stringify(comment)); 
 	xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) { // this basically checks that the request was succesful
-        	console.log("postComments worked!");
-            getComments(); // this will re-get the comments so that your new comment will show up on the page
-        } else {
-            console.log("postComments didn't work: "+ xhr.status); // use this to debug if it didn't work
-        }
-    }
+		if (xhr.readyState === 4 && xhr.status === 200) { 
+			console.log("postComments worked!");
+			getComments(); 
+		} else {
+			console.log("postComments didn't work: "+ xhr.status); 
+		}
+	}
 }
 
 function showDestinations(dest) {
