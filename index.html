@@ -10,7 +10,6 @@
    <script src="js/functionality.js" type="text/javascript"></script>
 
 </head>
-<body>
 
    <div class="container">
       <ul class="tabs">
@@ -28,21 +27,19 @@
            </div>
            <div class="form-group">
              <label for="sel1">Type:</label>
-             <select class="form-control" id="sel1">
-              <option>Blurays</option>
-              <option>Books</option>
+             <select id="sel1" onchange="makeSelection()">
+              <option value="0">Blurays</option>
+              <option value="1">Books</option>
            </select>
         </div>
-        <button type="submit" class="btn btn-default">Search</button>
+        <input type="button" Value="Search" onclick="searchSite()"</input>
      </form>
+   <br>
+<table class="table" style="width:90%">
 
-<table style="width:100%">
-  <td id = "Images">
-  </tr>
   <td id = "Titles">
-  </tr>
-  <td id = "Buy Now">
-  </tr>
+
+
 </table>
   </div>
 </div>
@@ -62,7 +59,7 @@
            <label for="address_area">Address:</label>
            <textarea type="address" class="form-control" row="4" id="address_area" placeholder="Insert address Here"></textarea>
         </div>
-        <button type="text" class="btn btn-default">Submit</button>
+        <input type="button" Value="Submit" onclick="registerNewUser()"</input>
      </form>
   </div>
 </div>

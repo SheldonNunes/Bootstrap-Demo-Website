@@ -39,3 +39,9 @@ body{
 		.tab-content.current{
 			display: inherit;
 		}
+
+		td {
+			    height: 50px;
+    	vertical-align: center;
+    	text-align: center;
+}
